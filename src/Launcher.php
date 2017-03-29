@@ -23,6 +23,8 @@ use Phuria\Snake\Ncurses\Window;
  */
 class Launcher
 {
+    public static $debugText;
+
     /**
      * Entry point.
      */
@@ -63,9 +65,10 @@ class Launcher
 
             $window->renderCharReverse(0, 0, "Frames: {$frameCount}");
             $window->renderCharReverse(1, 0, "Size: {$window->getSizeX()}x{$window->getSizeY()}");
+            $window->renderCharReverse(2, 0, 'Debug: '.static::$debugText);
 
             $window->refresh();
-            usleep(500 * 1000);
+            usleep(200 * 1000);
             $frameCount++;
         }
 

@@ -11,6 +11,8 @@
 
 namespace Phuria\Snake\Game;
 
+use Phuria\Snake\Launcher;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -136,7 +138,10 @@ class Board implements AdvanceInterface
                 $x = $this->checkPosition($element->getX() + $x, $this->sizeX);
                 $y = $this->checkPosition($element->getY() + $y, $this->sizeY);
 
+                Launcher::$debugText = "X: {$element->getX()}, Y: {$element->getY()}";
+
                 $this->getHolder($x, $y)->addPayload(new SnakeHead());
+                return;
             }
         }
     }
