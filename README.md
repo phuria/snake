@@ -20,7 +20,7 @@ sudo docker exec -it phuria-snake bash
 3. Install composer dependencies and run snake!
 
 ```
-cd phuria-snake
+cd snake
 composer update
-php
+./run
 ```
