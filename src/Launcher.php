@@ -12,6 +12,7 @@
 namespace Phuria\Snake;
 
 use Phuria\Snake\Game\Board;
+use Phuria\Snake\Game\InputInterpreter;
 use Phuria\Snake\Game\PositionHolder;
 use Phuria\Snake\Input\InputReader;
 use Phuria\Snake\Ncurses\Screen;
@@ -31,30 +32,28 @@ class Launcher
         $window = new Window();
         $input = new InputReader();
 
-        $board = new Board($window->getSizeX(), $window->getSizeY());
+        $board = new Board($window->getSizeX() - 1, $window->getSizeY() - 1);
         $board->initializeSnake();
 
         $frameCount = 0;
-
-        $positionX = 0;
-        $positionY = 0;
+        $direction = 'a';
 
         while(true) {
-
             $key = $input->readLatestKey();
+            $direction = $key ?: $direction;
 
-            switch ($key) {
+            switch ($direction) {
                 case 'w':
-                    $positionX--;
+                    $board->modifyHeadPosition(-1, 0);
                     break;
                 case 's':
-                    $positionX++;
+                    $board->modifyHeadPosition(1, 0);
                     break;
                 case 'a';
-                    $positionY--;
+                    $board->modifyHeadPosition(0, -1);
                     break;
                 case 'd':
-                    $positionY++;
+                    $board->modifyHeadPosition(0, 1);
                     break;
             }
 
@@ -63,6 +62,7 @@ class Launcher
             $board->render($window);
 
             $window->renderCharReverse(0, 0, "Frames: {$frameCount}");
+            $window->renderCharReverse(1, 0, "Size: {$window->getSizeX()}x{$window->getSizeY()}");
 
             $window->refresh();
             usleep(500 * 1000);

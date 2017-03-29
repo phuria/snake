@@ -62,7 +62,7 @@ class Board implements AdvanceInterface
 
         for ($i = 0; $i < $length; $i++) {
             $this->getHolder($centerX, $centerY + $i)->addPayload(
-                $this->snakeParts[] = new SnakePart($length - $i)
+                0 === $i ? new SnakeHead() : new SnakePart($length - $i)
             );
         }
     }
@@ -120,5 +120,57 @@ class Board implements AdvanceInterface
         foreach ($this->elements as $element) {
             $element->render($renderer);
         }
+    }
+
+    /**
+     * @param int $x
+     * @param int $y
+     */
+    public function modifyHeadPosition($x, $y)
+    {
+        foreach ($this->elements as $element) {
+            if ($head = $element->getSnakeHead()) {
+                $element->removePayload($head);
+                $element->addPayload(new SnakePart($this->snakePartCount()));
+
+                $x = $this->checkPosition($element->getX() + $x, $this->sizeX);
+                $y = $this->checkPosition($element->getY() + $y, $this->sizeY);
+
+                $this->getHolder($x, $y)->addPayload(new SnakeHead());
+            }
+        }
+    }
+
+    /**
+     * @param int $requested
+     * @param int $max
+     *
+     * @return int
+     */
+    private function checkPosition($requested, $max)
+    {
+        if ($requested > $max) {
+            return 0;
+        }
+
+        if ($requested < 0) {
+            return $max;
+        }
+
+        return $requested;
+    }
+
+    /**
+     * @return int
+     */
+    public function snakePartCount()
+    {
+        $count = 0;
+
+        foreach ($this->elements as $element) {
+            $count += (int) $element->hasSnakePart();
+        }
+
+        return $count;
     }
 }

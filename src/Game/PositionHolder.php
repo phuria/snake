@@ -99,4 +99,32 @@ class PositionHolder implements AdvanceInterface
             }
         }
     }
+
+    /**
+     * @return SnakeHead
+     */
+    public function getSnakeHead()
+    {
+        foreach ($this->payload as $payload) {
+            if ($payload instanceof SnakeHead) {
+                return $payload;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @return bool
+     */
+    public function hasSnakePart()
+    {
+        foreach ($this->payload as $payload) {
+            if ($payload instanceof SnakePart) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
