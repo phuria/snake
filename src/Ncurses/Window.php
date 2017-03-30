@@ -67,7 +67,22 @@ class Window implements RendererInterface
         $this->renderString($positionX, $positionY, $text->getText());
     }
 
+    /**
+     * @param int $positionX
+     * @param int $positionY
+     * @param int $code
+     */
+    public function renderCharacterCode($positionX, $positionY, $code)
+    {
+        ncurses_wmove($this->handler, $positionX, $positionY);
+        ncurses_waddch($this->handler, $code);
+    }
 
+    /**
+     * @param int           $positionX
+     * @param FormattedText $text
+     * @param string        $padString
+     */
     public function renderTextWithPadding($positionX, FormattedText $text, $padString = '.')
     {
         $this->applyFormatting($text);

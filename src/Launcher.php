@@ -12,6 +12,7 @@
 namespace Phuria\Snake;
 
 use Phuria\Snake\Game\Board;
+use Phuria\Snake\Game\StatsBoard;
 use Phuria\Snake\Input\InputReader;
 use Phuria\Snake\Ncurses\Screen;
 use Phuria\Snake\Ncurses\Window;
@@ -37,21 +38,21 @@ class Launcher
         }
 
         $topWindow = new Window(1);
-        $format = "   Snake - Copyright (c) 2017 Beniamin Jonatan Simko ";
-        $topWindow->renderTextWithPadding(0, new FormattedText($format, [
-            'colorInverted' => true
-        ]), ' ');
-        $topWindow->refresh();
-
+        $statsBoard = new StatsBoard($topWindow);
         $gameWindow = new Window(0,0,1,0);
         $input = new InputReader();
 
-        $board = new Board($gameWindow->getSizeX() - 1, $gameWindow->getSizeY() - 1);
+        $board = new Board(
+            $gameWindow->getSizeX() - 1,
+            $gameWindow->getSizeY() - 1,
+            $statsBoard
+        );
         $board->initializeSnake();
 
         $direction = 'a';
 
         while(true) {
+
             $key = $input->readLatestKey();
             $direction = in_array($key, ['w', 's', 'a', 'd']) ? $key : $direction;
 

@@ -39,10 +39,16 @@ class Board implements AdvanceInterface
     private $sizeY;
 
     /**
-     * @param  $sizeX
-     * @param $sizeY
+     * @var StatsBoard
      */
-    public function __construct($sizeX, $sizeY)
+    private $statsBoard;
+
+    /**
+     * @param int        $sizeX
+     * @param int        $sizeY
+     * @param StatsBoard $statsBoard
+     */
+    public function __construct($sizeX, $sizeY, StatsBoard $statsBoard)
     {
         for ($x = 0; $x <= $sizeX; $x++) {
             for ($y = 0; $y <= $sizeY; $y++) {
@@ -52,6 +58,7 @@ class Board implements AdvanceInterface
 
         $this->sizeX = $sizeX;
         $this->sizeY = $sizeY;
+        $this->statsBoard = $statsBoard;
     }
 
     /**
@@ -116,8 +123,13 @@ class Board implements AdvanceInterface
         if (1 === rand(0, 15)) {
             $this->seedFruit();
         }
+
+        $this->statsBoard->advance();
     }
 
+    /**
+     * Create fruit on random position.
+     */
     public function seedFruit()
     {
         $holder = $this->getHolder(rand(0, $this->sizeX), rand(0, $this->sizeY));
