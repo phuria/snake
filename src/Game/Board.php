@@ -18,6 +18,9 @@ use Phuria\Snake\Launcher;
  */
 class Board implements AdvanceInterface
 {
+    const RESULT_PROGRESS = 1;
+    const RESULT_GAME_END = 2;
+
     /**
      * @var PositionHolder[]
      */

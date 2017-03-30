@@ -1,5 +1,8 @@
 # phuria/snake
-Classic version of the Snake game.
+Snake game written in PHP. Example of using an 
+[ncurses extension](https://pecl.php.net/package/ncurses).
+
+[[https://github.com/phuria/doc/blob/master/doc/screen.png]]
 
 # Installation 
 
