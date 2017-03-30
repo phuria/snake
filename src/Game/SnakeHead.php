@@ -11,6 +11,7 @@
 
 namespace Phuria\Snake\Game;
 
+use Phuria\Snake\Ncurses\Screen;
 use Phuria\Snake\Output\Character;
 
 /**
@@ -28,7 +29,7 @@ class SnakeHead implements PayloadInterface
      */
     public function __construct()
     {
-        $this->character = new Character(':', true);
+        $this->character = new Character(':', true, Screen::COLOR_GREEN_ON_BLACK);
     }
 
     /**

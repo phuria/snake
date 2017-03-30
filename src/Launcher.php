@@ -12,8 +12,6 @@
 namespace Phuria\Snake;
 
 use Phuria\Snake\Game\Board;
-use Phuria\Snake\Game\InputInterpreter;
-use Phuria\Snake\Game\PositionHolder;
 use Phuria\Snake\Input\InputReader;
 use Phuria\Snake\Ncurses\Screen;
 use Phuria\Snake\Ncurses\Window;
@@ -31,6 +29,8 @@ class Launcher
     public function run()
     {
         $screen = new Screen();
+        $screen->initializeColors();
+
         $window = new Window();
         $input = new InputReader();
 
@@ -42,7 +42,7 @@ class Launcher
 
         while(true) {
             $key = $input->readLatestKey();
-            $direction = $key ?: $direction;
+            $direction = in_array($key, ['w', 's', 'a', 'd']) ? $key : $direction;
 
             switch ($direction) {
                 case 'w':

@@ -11,6 +11,8 @@
 
 namespace Phuria\Snake\Output;
 
+use Phuria\Snake\Ncurses\Screen;
+
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
@@ -27,13 +29,20 @@ class Character
     private $colorInverted;
 
     /**
+     * @var int
+     */
+    private $colorPair;
+
+    /**
      * @param string $char
      * @param bool   $colorInverted
+     * @param int    $colorPair
      */
-    public function __construct($char, $colorInverted = false)
+    public function __construct($char, $colorInverted = false, $colorPair = Screen::COLOR_DEFAULT)
     {
         $this->char = $char;
         $this->colorInverted = $colorInverted;
+        $this->colorPair = $colorPair;
     }
 
     /**
@@ -50,5 +59,13 @@ class Character
     public function getChar()
     {
         return $this->char;
+    }
+
+    /**
+     * @return int
+     */
+    public function getColorPair()
+    {
+        return $this->colorPair;
     }
 }

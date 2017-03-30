@@ -109,8 +109,16 @@ class Board implements AdvanceInterface
      */
     public function advance()
     {
+        $hasFruit = false;
+
         foreach ($this->elements as $element) {
+            //$hasFruit = $hasFruit || $element->hasFruit();
             $element->advance();
+        }
+
+        if (false === $hasFruit) {
+            $this->getHolder(rand(0, $this->sizeX), rand(0, $this->sizeY))
+                ->addPayload(new Fruit());
         }
     }
 

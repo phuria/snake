@@ -52,8 +52,12 @@ class Window implements RendererInterface
      */
     public function renderChar($positionX, $positionY, $char)
     {
-        ncurses_wmove($this->handler, $positionX, $positionY);
-        ncurses_waddstr($this->handler, $char);
+        //ncurses_bkgdset(NCURSES_COLOR_BLUE);
+        //ncurses_wcolor_set($this->handler, NCURSES_COLOR_RED);
+        ncurses_mvwaddstr($this->handler, $positionX, $positionY, $char);
+        ncurses_wcolor_set($this->handler, 1);
+        //ncurses_wmove($this->handler, $positionX, $positionY);
+        //ncurses_waddstr($this->handler, $char);
     }
 
     /**
@@ -73,11 +77,18 @@ class Window implements RendererInterface
      */
     public function renderCharacter($positionX, $positionY, Character $character)
     {
+        if ($pair = $character->getColorPair()) {
+            ncurses_wcolor_set($this->handler, $pair);
+        } else {
+            ncurses_wcolor_set($this->handler, Screen::COLOR_DEFAULT);
+        }
+
         if ($character->isColorInverted()) {
             $this->renderCharReverse($positionX, $positionY, $character->getChar());
         } else {
             $this->renderChar($positionX, $positionY, $character->getChar());
         }
+
     }
 
     /**

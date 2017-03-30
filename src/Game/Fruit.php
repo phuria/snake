@@ -17,25 +17,24 @@ use Phuria\Snake\Output\Character;
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class SnakePart implements PayloadInterface
+class Fruit implements PayloadInterface
 {
-    /**
-     * @var int
-     */
-    private $expiresIn;
-
     /**
      * @var Character
      */
     private $character;
 
-    /**
-     * @param int $expiresIn
-     */
-    public function __construct($expiresIn)
+    public function __construct()
     {
-        $this->expiresIn = $expiresIn;
-        $this->character = new Character(' ', true, Screen::COLOR_GREEN_ON_BLACK);
+        $this->character = new Character('@', false, Screen::COLOR_RED_ON_BLACK);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function advance()
+    {
+        return;
     }
 
     /**
@@ -43,7 +42,7 @@ class SnakePart implements PayloadInterface
      */
     public function isExpired()
     {
-        return 0 >= $this->expiresIn;
+        return false;
     }
 
     /**
@@ -60,13 +59,5 @@ class SnakePart implements PayloadInterface
     public function getCharacter()
     {
         return $this->character;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function advance()
-    {
-        $this->expiresIn--;
     }
 }
