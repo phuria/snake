@@ -183,6 +183,8 @@ class Board implements AdvanceInterface
                     $this->statsBoard->addScore(1000);
                     $this->snakeGrow(3);
                 }
+
+                return static::RESULT_GAME_IN_PROGRESS;
             }
         }
 

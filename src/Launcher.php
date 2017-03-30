@@ -102,6 +102,7 @@ class Launcher
             'colorPair' => Screen::COLOR_GREEN_ON_BLACK
         ]);
 
+        sleep(2);
         $input->waitForKeyPress();
     }
 }
