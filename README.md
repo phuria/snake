@@ -2,7 +2,7 @@
 Snake game written in PHP. Example of using an 
 [ncurses extension](https://pecl.php.net/package/ncurses).
 
-[[https://github.com/phuria/doc/blob/master/doc/screen.png]]
+![Phuria snake game screen](https://github.com/phuria/snake/blob/master/doc/screen.png?raw=true)
 
 # Installation 
 
