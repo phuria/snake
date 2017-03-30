@@ -12,16 +12,17 @@
 namespace Phuria\Snake\Output;
 
 use Phuria\Snake\Ncurses\Screen;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
-class Character
+class FormattedText
 {
     /**
      * @var string
      */
-    private $char;
+    private $text;
 
     /**
      * @var bool
@@ -34,15 +35,19 @@ class Character
     private $colorPair;
 
     /**
-     * @param string $char
-     * @param bool   $colorInverted
-     * @param int    $colorPair
+     * @param string $text
+     * @param array  $options
      */
-    public function __construct($char, $colorInverted = false, $colorPair = Screen::COLOR_DEFAULT)
+    public function __construct($text, array $options = [])
     {
-        $this->char = $char;
-        $this->colorInverted = $colorInverted;
-        $this->colorPair = $colorPair;
+        $options = (new OptionsResolver())->setDefaults([
+            'colorInverted' => false,
+            'colorPair'     => Screen::COLOR_DEFAULT
+        ])->resolve($options);
+
+        $this->text = $text;
+        $this->colorInverted = $options['colorInverted'];
+        $this->colorPair = $options['colorPair'];
     }
 
     /**
@@ -56,9 +61,9 @@ class Character
     /**
      * @return string
      */
-    public function getChar()
+    public function getText()
     {
-        return $this->char;
+        return $this->text;
     }
 
     /**

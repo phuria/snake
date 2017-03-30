@@ -12,7 +12,7 @@
 namespace Phuria\Snake\Game;
 
 use Phuria\Snake\Ncurses\Screen;
-use Phuria\Snake\Output\Character;
+use Phuria\Snake\Output\FormattedText;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -20,7 +20,7 @@ use Phuria\Snake\Output\Character;
 class SnakeHead implements PayloadInterface
 {
     /**
-     * @var Character
+     * @var FormattedText
      */
     private $character;
 
@@ -29,7 +29,10 @@ class SnakeHead implements PayloadInterface
      */
     public function __construct()
     {
-        $this->character = new Character(':', true, Screen::COLOR_GREEN_ON_BLACK);
+        $this->character = new FormattedText(':', [
+            'colorInverted' => true,
+            'colorPair'     => Screen::COLOR_GREEN_ON_BLACK
+        ]);
     }
 
     /**

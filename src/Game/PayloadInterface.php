@@ -11,7 +11,7 @@
 
 namespace Phuria\Snake\Game;
 
-use Phuria\Snake\Output\Character;
+use Phuria\Snake\Output\FormattedText;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -29,7 +29,7 @@ interface PayloadInterface extends AdvanceInterface
     public function isVisible();
 
     /**
-     * @return Character
+     * @return FormattedText
      */
     public function getCharacter();
 }

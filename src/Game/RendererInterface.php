@@ -11,7 +11,7 @@
 
 namespace Phuria\Snake\Game;
 
-use Phuria\Snake\Output\Character;
+use Phuria\Snake\Output\FormattedText;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -19,9 +19,9 @@ use Phuria\Snake\Output\Character;
 interface RendererInterface
 {
     /**
-     * @param int       $positionX
-     * @param int       $positionY
-     * @param Character $character
+     * @param int           $positionX
+     * @param int           $positionY
+     * @param FormattedText $text
      */
-    public function renderCharacter($positionX, $positionY, Character $character);
+    public function renderText($positionX, $positionY, FormattedText $text);
 }

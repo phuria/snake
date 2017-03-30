@@ -12,7 +12,7 @@
 namespace Phuria\Snake\Ncurses;
 
 use Phuria\Snake\Game\RendererInterface;
-use Phuria\Snake\Output\Character;
+use Phuria\Snake\Output\FormattedText;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -35,11 +35,14 @@ class Window implements RendererInterface
     private $sizeY;
 
     /**
-     * Window constructor.
+     * @param int $rows
+     * @param int $cols
+     * @param int $x
+     * @param int $y
      */
-    public function __construct()
+    public function __construct($rows = 0, $cols = 0, $x = 0, $y = 0)
     {
-        $this->handler = ncurses_newwin(0, 0, 0, 0);
+        $this->handler = ncurses_newwin($rows, $cols, $x, $y);
         ncurses_getmaxyx($this->handler, $x, $y);
         $this->sizeX = $x;
         $this->sizeY = $y;
@@ -48,47 +51,42 @@ class Window implements RendererInterface
     /**
      * @param int    $positionX
      * @param int    $positionY
-     * @param string $char
+     * @param string $string
      */
-    public function renderChar($positionX, $positionY, $char)
+    public function renderString($positionX, $positionY, $string)
     {
-        //ncurses_bkgdset(NCURSES_COLOR_BLUE);
-        //ncurses_wcolor_set($this->handler, NCURSES_COLOR_RED);
-        ncurses_mvwaddstr($this->handler, $positionX, $positionY, $char);
-        ncurses_wcolor_set($this->handler, 1);
-        //ncurses_wmove($this->handler, $positionX, $positionY);
-        //ncurses_waddstr($this->handler, $char);
-    }
-
-    /**
-     * @param int    $positionX
-     * @param int    $positionY
-     * @param string $char
-     */
-    public function renderCharReverse($positionX, $positionY, $char)
-    {
-        ncurses_wattron($this->handler, NCURSES_A_REVERSE);
-        $this->renderChar($positionX, $positionY, $char);
-        ncurses_wattroff($this->handler, NCURSES_A_REVERSE);
+        ncurses_mvwaddstr($this->handler, $positionX, $positionY, $string);
     }
 
     /**
      * @inheritdoc
      */
-    public function renderCharacter($positionX, $positionY, Character $character)
+    public function renderText($positionX, $positionY, FormattedText $text)
     {
-        if ($pair = $character->getColorPair()) {
-            ncurses_wcolor_set($this->handler, $pair);
+        $this->applyFormatting($text);
+        $this->renderString($positionX, $positionY, $text->getText());
+    }
+
+
+    public function renderTextWithPadding($positionX, FormattedText $text, $padString = '.')
+    {
+        $this->applyFormatting($text);
+        $text = str_pad($text->getText(), $this->sizeY, $padString);
+        $this->renderString($positionX, 0, $text);
+    }
+
+    /**
+     * @param FormattedText $text
+     */
+    private function applyFormatting(FormattedText $text)
+    {
+        if ($text->isColorInverted()) {
+            ncurses_wattron($this->handler, NCURSES_A_REVERSE);
         } else {
-            ncurses_wcolor_set($this->handler, Screen::COLOR_DEFAULT);
+            ncurses_wattroff($this->handler, NCURSES_A_REVERSE);
         }
 
-        if ($character->isColorInverted()) {
-            $this->renderCharReverse($positionX, $positionY, $character->getChar());
-        } else {
-            $this->renderChar($positionX, $positionY, $character->getChar());
-        }
-
+        ncurses_wcolor_set($this->handler, $text->getColorPair());
     }
 
     /**

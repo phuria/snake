@@ -15,6 +15,7 @@ use Phuria\Snake\Game\Board;
 use Phuria\Snake\Input\InputReader;
 use Phuria\Snake\Ncurses\Screen;
 use Phuria\Snake\Ncurses\Window;
+use Phuria\Snake\Output\FormattedText;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -31,13 +32,23 @@ class Launcher
         $screen = new Screen();
         $screen->initializeColors();
 
-        $window = new Window();
+        if (ncurses_can_change_color()) {
+            exit;
+        }
+
+        $topWindow = new Window(1);
+        $format = "   Snake - Copyright (c) 2017 Beniamin Jonatan Simko ";
+        $topWindow->renderTextWithPadding(0, new FormattedText($format, [
+            'colorInverted' => true
+        ]), ' ');
+        $topWindow->refresh();
+
+        $gameWindow = new Window(0,0,1,0);
         $input = new InputReader();
 
-        $board = new Board($window->getSizeX() - 1, $window->getSizeY() - 1);
+        $board = new Board($gameWindow->getSizeX() - 1, $gameWindow->getSizeY() - 1);
         $board->initializeSnake();
 
-        $frameCount = 0;
         $direction = 'a';
 
         while(true) {
@@ -60,18 +71,10 @@ class Launcher
             }
 
             $board->advance();
-            $window->clear();
-            $board->render($window);
-
-            $window->renderCharReverse(0, 0, "Frames: {$frameCount}");
-            $window->renderCharReverse(1, 0, "Size: {$window->getSizeX()}x{$window->getSizeY()}");
-            $window->renderCharReverse(2, 0, 'Debug: '.static::$debugText);
-
-            $window->refresh();
+            $gameWindow->clear();
+            $board->render($gameWindow);
+            $gameWindow->refresh();
             usleep(200 * 1000);
-            $frameCount++;
         }
-
-        ncurses_getch();
     }
 }

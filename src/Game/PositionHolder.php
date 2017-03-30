@@ -95,7 +95,7 @@ class PositionHolder implements AdvanceInterface
     {
         foreach ($this->payload as $payload) {
             if ($payload->isVisible()) {
-                $renderer->renderCharacter($this->getX(), $this->getY(), $payload->getCharacter());
+                $renderer->renderText($this->getX(), $this->getY(), $payload->getCharacter());
             }
         }
     }
@@ -126,5 +126,13 @@ class PositionHolder implements AdvanceInterface
         }
 
         return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isSnakeHere()
+    {
+        return $this->hasSnakePart() || $this->getSnakeHead();
     }
 }

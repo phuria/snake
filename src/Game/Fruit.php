@@ -12,7 +12,7 @@
 namespace Phuria\Snake\Game;
 
 use Phuria\Snake\Ncurses\Screen;
-use Phuria\Snake\Output\Character;
+use Phuria\Snake\Output\FormattedText;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -20,13 +20,15 @@ use Phuria\Snake\Output\Character;
 class Fruit implements PayloadInterface
 {
     /**
-     * @var Character
+     * @var FormattedText
      */
     private $character;
 
     public function __construct()
     {
-        $this->character = new Character('@', false, Screen::COLOR_RED_ON_BLACK);
+        $this->character = new FormattedText('@', [
+            'colorPair' => Screen::COLOR_RED_ON_BLACK
+        ]);
     }
 
     /**

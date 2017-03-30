@@ -12,7 +12,7 @@
 namespace Phuria\Snake\Game;
 
 use Phuria\Snake\Ncurses\Screen;
-use Phuria\Snake\Output\Character;
+use Phuria\Snake\Output\FormattedText;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
@@ -25,7 +25,7 @@ class SnakePart implements PayloadInterface
     private $expiresIn;
 
     /**
-     * @var Character
+     * @var FormattedText
      */
     private $character;
 
@@ -35,7 +35,10 @@ class SnakePart implements PayloadInterface
     public function __construct($expiresIn)
     {
         $this->expiresIn = $expiresIn;
-        $this->character = new Character(' ', true, Screen::COLOR_GREEN_ON_BLACK);
+        $this->character = new FormattedText(' ', [
+            'colorInverted' => true,
+            'colorPair'     => Screen::COLOR_GREEN_ON_BLACK
+        ]);
     }
 
     /**
