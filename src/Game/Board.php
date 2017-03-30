@@ -11,15 +11,13 @@
 
 namespace Phuria\Snake\Game;
 
-use Phuria\Snake\Launcher;
-
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class Board implements AdvanceInterface
 {
-    const RESULT_PROGRESS = 1;
-    const RESULT_GAME_END = 2;
+    const RESULT_GAME_OVER = 1;
+    const RESULT_GAME_IN_PROGRESS = 2;
 
     /**
      * @var PositionHolder[]
@@ -159,6 +157,8 @@ class Board implements AdvanceInterface
     /**
      * @param int $x
      * @param int $y
+     *
+     * @return int
      */
     public function modifyHeadPosition($x, $y)
     {
@@ -169,9 +169,12 @@ class Board implements AdvanceInterface
                 $x = $this->checkPosition($element->getX() + $x, $this->sizeX);
                 $y = $this->checkPosition($element->getY() + $y, $this->sizeY);
 
-                Launcher::$debugText = "X: {$element->getX()}, Y: {$element->getY()}";
-
                 $holder = $this->getHolder($x, $y);
+
+                if ($holder->getSnakePart()) {
+                    return static::RESULT_GAME_OVER;
+                }
+
                 $holder->addPayload(new SnakeHead());
                 $element->addPayload(new SnakePart($this->snakePartCount()));
 
@@ -180,10 +183,10 @@ class Board implements AdvanceInterface
                     $this->statsBoard->addScore(1000);
                     $this->snakeGrow(3);
                 }
-
-                return;
             }
         }
+
+        return static::RESULT_GAME_IN_PROGRESS;
     }
 
     /**

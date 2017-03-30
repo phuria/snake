@@ -71,4 +71,12 @@ class StatsBoard implements AdvanceInterface
     {
         $this->score += $score;
     }
+
+    /**
+     * @return int
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }
 }

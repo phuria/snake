@@ -41,6 +41,17 @@ class Screen
         ncurses_end();
     }
 
+    /**
+     * @return int
+     */
+    public function readKey()
+    {
+        return ncurses_getch();
+    }
+
+    /**
+     * Initializing colors.
+     */
     public function initializeColors()
     {
         ncurses_init_pair(static::COLOR_DEFAULT, NCURSES_COLOR_WHITE, NCURSES_COLOR_BLACK);

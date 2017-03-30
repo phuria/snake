@@ -20,7 +20,8 @@
   "require": {
     "php": "~5.6.0",
     "ext-ncurses": "^1.0",
-    "symfony/options-resolver": "*"
+    "symfony/options-resolver": "*",
+    "povils/figlet": "^1.0@dev"
   },
   "autoload": {
     "psr-4": {

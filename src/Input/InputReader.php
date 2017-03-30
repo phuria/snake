@@ -47,4 +47,14 @@ class InputReader
 
         return $input ? substr($input, -1) : null;
     }
+
+    /**
+     * Wait for press any key.
+     */
+    public function waitForKeyPress()
+    {
+        while (!$this->readLatestKey()) {
+            usleep(10000);
+        }
+    }
 }

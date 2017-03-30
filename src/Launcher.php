@@ -16,15 +16,14 @@ use Phuria\Snake\Game\StatsBoard;
 use Phuria\Snake\Input\InputReader;
 use Phuria\Snake\Ncurses\Screen;
 use Phuria\Snake\Ncurses\Window;
-use Phuria\Snake\Output\FormattedText;
+use Phuria\Snake\Output\FigletRenderer;
+use Povils\Figlet\Figlet;
 
 /**
  * @author Beniamin Jonatan Šimko <spam@simko.it>
  */
 class Launcher
 {
-    public static $debugText;
-
     /**
      * Entry point.
      */
@@ -42,6 +41,12 @@ class Launcher
         $gameWindow = new Window(0,0,1,0);
         $input = new InputReader();
 
+        $gameWindow->renderTextBlockCentered($c = file_get_contents(__DIR__.'/../font/logo.txt'), [
+            'colorPair' => Screen::COLOR_GREEN_ON_BLACK
+        ]);
+        $gameWindow->refresh();
+        $input->waitForKeyPress();
+
         $board = new Board(
             $gameWindow->getSizeX() - 1,
             $gameWindow->getSizeY() - 1,
@@ -52,23 +57,30 @@ class Launcher
         $direction = 'a';
 
         while(true) {
-
             $key = $input->readLatestKey();
             $direction = in_array($key, ['w', 's', 'a', 'd']) ? $key : $direction;
 
+            $moveX = $moveY = 0;
+
             switch ($direction) {
                 case 'w':
-                    $board->modifyHeadPosition(-1, 0);
+                    $moveX = -1;
                     break;
                 case 's':
-                    $board->modifyHeadPosition(1, 0);
+                    $moveX = 1;
                     break;
                 case 'a';
-                    $board->modifyHeadPosition(0, -1);
+                    $moveY = -1;
                     break;
                 case 'd':
-                    $board->modifyHeadPosition(0, 1);
+                    $moveY = 1;
                     break;
+            }
+
+            $result = $board->modifyHeadPosition($moveX, $moveY);
+
+            if (Board::RESULT_GAME_OVER === $result) {
+                break;
             }
 
             $board->advance();
@@ -77,5 +89,19 @@ class Launcher
             $gameWindow->refresh();
             usleep( 50000);
         }
+
+        $figlet = new Figlet();
+        $figlet->setFontDir(__DIR__ . '/../font/');
+        $figlet->setFont('roman');
+
+        $topWindow->clear();
+        $topWindow->refresh();
+
+        $figletRenderer = new FigletRenderer($figlet, $gameWindow);
+        $figletRenderer->renderCenter("{$statsBoard->getScore()} pts.", [
+            'colorPair' => Screen::COLOR_GREEN_ON_BLACK
+        ]);
+
+        $input->waitForKeyPress();
     }
 }

@@ -91,6 +91,26 @@ class Window implements RendererInterface
     }
 
     /**
+     * @param string $textBlock
+     * @param array  $options
+     */
+    public function renderTextBlockCentered($textBlock, array $options)
+    {
+        $lines = explode(PHP_EOL, $textBlock);
+
+        $lengths = array_map(function ($str) {
+            return strlen($str);
+        }, $lines);
+
+        $startX = (int) (($this->getSizeX() - count($lines)) / 2);
+        $startY = (int) (($this->getSizeY() - max($lengths)) / 2);
+
+        foreach ($lines as $i => $line) {
+            $this->renderText($i + $startX, $startY, new FormattedText($line, $options));
+        }
+    }
+
+    /**
      * @param FormattedText $text
      */
     private function applyFormatting(FormattedText $text)
@@ -118,6 +138,14 @@ class Window implements RendererInterface
     public function refresh()
     {
         ncurses_wrefresh($this->handler);
+    }
+
+    /**
+     * @return int
+     */
+    public function readKey()
+    {
+        return ncurses_wgetch($this->handler);
     }
 
     /**
