@@ -75,7 +75,7 @@ class Launcher
             $gameWindow->clear();
             $board->render($gameWindow);
             $gameWindow->refresh();
-            usleep(200 * 1000);
+            usleep( 50000);
         }
     }
 }

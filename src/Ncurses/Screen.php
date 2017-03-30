@@ -20,6 +20,8 @@ class Screen
     const COLOR_GREEN_ON_BLACK = 2;
     const COLOR_RED_ON_BLACK = 3;
     const COLOR_BLACK_ON_BLUE = 4;
+    const COLOR_BLUE_ON_BLACK = 5;
+    const COLOR_YELLOW_ON_BLACK = 6;
 
     /**
      * Initializing application.
@@ -45,5 +47,7 @@ class Screen
         ncurses_init_pair(static::COLOR_GREEN_ON_BLACK, NCURSES_COLOR_GREEN, NCURSES_COLOR_BLACK);
         ncurses_init_pair(static::COLOR_RED_ON_BLACK, NCURSES_COLOR_RED, NCURSES_COLOR_BLACK);
         ncurses_init_pair(static::COLOR_BLACK_ON_BLUE, NCURSES_COLOR_BLACK, NCURSES_COLOR_BLUE);
+        ncurses_init_pair(static::COLOR_BLUE_ON_BLACK, NCURSES_COLOR_BLUE, NCURSES_COLOR_BLACK);
+        ncurses_init_pair(static::COLOR_YELLOW_ON_BLACK, NCURSES_COLOR_YELLOW, NCURSES_COLOR_BLACK);
     }
 }

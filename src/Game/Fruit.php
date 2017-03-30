@@ -26,8 +26,17 @@ class Fruit implements PayloadInterface
 
     public function __construct()
     {
-        $this->character = new FormattedText('@', [
-            'colorPair' => Screen::COLOR_RED_ON_BLACK
+        $colors = [
+            Screen::COLOR_RED_ON_BLACK,
+            Screen::COLOR_BLUE_ON_BLACK,
+            Screen::COLOR_YELLOW_ON_BLACK,
+            Screen::COLOR_DEFAULT
+        ];
+
+        $characters = ['@', '#', '*', 'O'];
+
+        $this->character = new FormattedText($characters[array_rand($characters)], [
+            'colorPair' => $colors[array_rand($colors)]
         ]);
     }
 

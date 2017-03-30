@@ -124,6 +124,7 @@ class Board implements AdvanceInterface
             $this->seedFruit();
         }
 
+        $this->statsBoard->addScore(10);
         $this->statsBoard->advance();
     }
 
@@ -134,7 +135,7 @@ class Board implements AdvanceInterface
     {
         $holder = $this->getHolder(rand(0, $this->sizeX), rand(0, $this->sizeY));
 
-        if ($holder->isSnakeHere()) {
+        if ($holder->isSnakeHere() || $holder->getFruit()) {
             $this->seedFruit();
             return;
         }
@@ -161,15 +162,35 @@ class Board implements AdvanceInterface
         foreach ($this->elements as $element) {
             if ($head = $element->getSnakeHead()) {
                 $element->removePayload($head);
-                $element->addPayload(new SnakePart($this->snakePartCount()));
 
                 $x = $this->checkPosition($element->getX() + $x, $this->sizeX);
                 $y = $this->checkPosition($element->getY() + $y, $this->sizeY);
 
                 Launcher::$debugText = "X: {$element->getX()}, Y: {$element->getY()}";
 
-                $this->getHolder($x, $y)->addPayload(new SnakeHead());
+                $holder = $this->getHolder($x, $y);
+                $holder->addPayload(new SnakeHead());
+                $element->addPayload(new SnakePart($this->snakePartCount()));
+
+                if ($fruit = $holder->getFruit()) {
+                    $holder->removePayload($fruit);
+                    $this->statsBoard->addScore(1000);
+                    $this->snakeGrow(3);
+                }
+
                 return;
+            }
+        }
+    }
+
+    /**
+     * @param int $grow
+     */
+    public function snakeGrow($grow)
+    {
+        foreach ($this->elements as $element) {
+            if ($part = $element->getSnakePart()) {
+                $part->extendLife($grow);
             }
         }
     }
@@ -201,7 +222,7 @@ class Board implements AdvanceInterface
         $count = 0;
 
         foreach ($this->elements as $element) {
-            $count += (int) $element->hasSnakePart();
+            $count += (int) $element->getSnakePart();
         }
 
         return $count;

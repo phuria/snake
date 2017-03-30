@@ -115,17 +115,17 @@ class PositionHolder implements AdvanceInterface
     }
 
     /**
-     * @return bool
+     * @return SnakePart
      */
-    public function hasSnakePart()
+    public function getSnakePart()
     {
         foreach ($this->payload as $payload) {
             if ($payload instanceof SnakePart) {
-                return true;
+                return $payload;
             }
         }
 
-        return false;
+        return null;
     }
 
     /**
@@ -133,6 +133,20 @@ class PositionHolder implements AdvanceInterface
      */
     public function isSnakeHere()
     {
-        return $this->hasSnakePart() || $this->getSnakeHead();
+        return $this->getSnakePart() || $this->getSnakeHead();
+    }
+
+    /**
+     * @return Fruit
+     */
+    public function getFruit()
+    {
+        foreach ($this->payload as $payload) {
+            if ($payload instanceof Fruit) {
+                return $payload;
+            }
+        }
+
+        return null;
     }
 }

@@ -72,4 +72,12 @@ class SnakePart implements PayloadInterface
     {
         $this->expiresIn--;
     }
+
+    /**
+     * @param int $amount
+     */
+    public function extendLife($amount)
+    {
+        $this->expiresIn += $amount;
+    }
 }
