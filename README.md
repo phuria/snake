@@ -28,6 +28,6 @@ composer update
 ./run
 ```
 
-# Game screeen
+# Screenshots
 
 ![Phuria snake gameplay screen](https://github.com/phuria/snake/blob/master/doc/screen.png?raw=true)
